@@ -1,5 +1,5 @@
 #include <SPI.h>
-#include <arduino.h>
+#include <Arduino.h>
 
 #include "panel-scanner.h"
 #include "player.h"

@@ -1,4 +1,4 @@
-#include <arduino.h>
+#include <Arduino.h>
 
 #include "editor.h"
 #include "player.h"
