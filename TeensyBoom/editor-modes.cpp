@@ -23,7 +23,7 @@ static const int32_t UTILITY_SEL_INDICATOR = 0x16;
 static const int32_t PLAY_INDICATOR = 0x17;
 
 ///////////////////////////////////////////////////////////////////////////////////////
-// common implementation because chain display 
+// common implementation because chain display
 // is used by chain and patt sel modes.
 ///////////////////////////////////////////////////////////////////////////////////////
 
@@ -32,13 +32,13 @@ static void doChainLeds()
   if(thePlayer.chainIsActive())
   {
     theScanner.clearAllBlinkingLEDs();
-    
+
     for(uint32_t i = 0; i < Pattern::NUM_PATTERNS; i++)
     {
       theScanner.setBlinkingLED(i, thePlayer.checkChainMembership(i));
     }
     // blinking overrides background, so
-    // to mark current pattern, unset blinking, 
+    // to mark current pattern, unset blinking,
     // set background
     theScanner.clearBlinkingLED(thePattern.getCurrentPattern());
     theScanner.setBackgroundLED(thePattern.getCurrentPattern());
@@ -48,7 +48,7 @@ static void doChainLeds()
 static void doPlayingLed()
 {
   theScanner.clearAllOverlayLEDs();
-  
+
   if(thePlayer.isPlaying())
   {
     theScanner.setOverlayLED(thePlayer.getCurrentStep());
@@ -59,7 +59,7 @@ static void doPlayingLed()
     theScanner.clearBackgroundLED(PLAY_INDICATOR);
   }
 
- 
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -95,7 +95,7 @@ void pvEditorMode::HandlePlayButton(bool pressed)
 StepEdit::StepEdit(): pvEditorMode()
 {
   //current_voice = 0;
-  
+
 }
 
 void StepEdit::HandleKey(uint32_t keynum, bool pressed)
@@ -118,7 +118,7 @@ void StepEdit::HandleKey(uint32_t keynum, bool pressed)
         if(thePattern.getAccentBit(keynum))
           thePattern.toggleAccentBit(keynum);
       }
-      
+
       setLEDs(true);
     }
   }
@@ -164,19 +164,19 @@ void StepEdit::HandleKey(uint32_t keynum, bool pressed)
   {
     theScanner.setBackgroundLED(keynum, pressed);
   }
-#endif    
-  
+#endif
+
 }
 
 void StepEdit::setLEDs(bool entry)
 {
-  // Initialize LEDs 
+  // Initialize LEDs
   if(entry)
   {
     doPlayingLed();
-    
+
     theScanner.setBackgroundLED(STEP_EDIT_INDICATOR);
-    
+
     for(uint32_t i = 0; i < Pattern::PATTERN_LEN; i++)
     {
       theScanner.setBackgroundLED(i, thePattern.getVoiceBit(i));
@@ -188,7 +188,7 @@ void StepEdit::setLEDs(bool entry)
     theScanner.clearAllBackgroundLEDs();
     theScanner.clearAllBlinkingLEDs();
   }
-  
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -198,14 +198,14 @@ void StepEdit::setLEDs(bool entry)
 StepAccent::StepAccent(): pvEditorMode()
 {
   //current_voice = 0;
-  
+
 }
 
 void StepAccent::HandleKey(uint32_t keynum, bool pressed)
 {
   bool setting;
 
-  if(keynum == STEP_ACCENT_INDICATOR) 
+  if(keynum == STEP_ACCENT_INDICATOR)
   {
     if(!pressed)
     {
@@ -230,7 +230,7 @@ void StepAccent::HandleKey(uint32_t keynum, bool pressed)
       {
         thePattern.toggleBit(keynum);
       }
-      
+
       setLEDs(true);
     }
   }
@@ -238,13 +238,13 @@ void StepAccent::HandleKey(uint32_t keynum, bool pressed)
 
 void StepAccent::setLEDs(bool entry)
 {
-  // Initialize LEDs 
+  // Initialize LEDs
   if(entry)
   {
     doPlayingLed();
-    
+
     theScanner.setBackgroundLED(STEP_ACCENT_INDICATOR);
-    
+
     for(uint32_t i = 0; i < Pattern::PATTERN_LEN; i++)
     {
       theScanner.setBackgroundLED(i, thePattern.getAccentBit(i));
@@ -257,7 +257,7 @@ void StepAccent::setLEDs(bool entry)
     theScanner.clearAllBackgroundLEDs();
     theScanner.clearAllBlinkingLEDs();
   }
-  
+
 }
 
 
@@ -267,7 +267,7 @@ void StepAccent::setLEDs(bool entry)
 
 VoiceSelect::VoiceSelect(): pvEditorMode()
 {
-  
+
 }
 
 void VoiceSelect::HandleKey(uint32_t keynum, bool pressed)
@@ -297,13 +297,13 @@ void VoiceSelect::HandleKey(uint32_t keynum, bool pressed)
 void VoiceSelect::setLEDs(bool entry)
 {
   uint32_t bitnum;
-  
+
   if(entry)
   {
     theScanner.clearAllBackgroundLEDs();
-    
+
     doPlayingLed();
-    
+
     // Mode indication
     theScanner.setBackgroundLED(VOICE_SEL_INDICATOR);
 
@@ -324,13 +324,12 @@ void VoiceSelect::setLEDs(bool entry)
 
 MuteSelect::MuteSelect(): pvEditorMode()
 {
-  
+
 }
 
 void MuteSelect::HandleKey(uint32_t keynum, bool pressed)
 {
-  bool setting;
-  
+
   if(keynum == STEP_EDIT_INDICATOR) // voice select mode
   {
     if(pressed)
@@ -361,9 +360,8 @@ void MuteSelect::HandleKey(uint32_t keynum, bool pressed)
   {
     if(pressed)
     {
-      setting = thePlayer.toggleMuteBit(keynum);
+      thePlayer.toggleMuteBit(keynum);
       setLEDs(true);
-      
     }
   }
 }
@@ -373,7 +371,7 @@ void MuteSelect::setLEDs(bool entry)
   if(entry)
   {
     doPlayingLed();
-    
+
     // set mode indicator
     theScanner.setBackgroundLED(MUTE_SEL_INDICATOR);
 
@@ -385,7 +383,7 @@ void MuteSelect::setLEDs(bool entry)
       theScanner.setBlinkingLED(i, thePlayer.getPendingMuteBit(i));
     }
 
-    
+
   }
   else
   {
@@ -401,9 +399,9 @@ void MuteSelect::setLEDs(bool entry)
 
 PatternSelect::PatternSelect()
 {
-  
+
 }
-  
+
 void PatternSelect::HandleKey(uint32_t keynum, bool pressed)
 {
   if(keynum == STEP_EDIT_INDICATOR)
@@ -458,14 +456,14 @@ void PatternSelect::HandleKey(uint32_t keynum, bool pressed)
 void PatternSelect::setLEDs(bool entry)
 {
   int32_t pending;
-  
+
   if(entry)
   {
     theScanner.clearAllBackgroundLEDs();
     theScanner.clearAllBlinkingLEDs();
 
     doPlayingLed();
-    
+
     // set mode indicator
     theScanner.setBackgroundLED(PATTERN_SEL_INDICATOR);
 
@@ -498,9 +496,9 @@ void PatternSelect::setLEDs(bool entry)
 
 ChainEdit::ChainEdit()
 {
-  
+
 }
-  
+
 void ChainEdit::HandleKey(uint32_t keynum, bool pressed)
 {
   if(keynum == PATTERN_CHAIN_INDICATOR)
@@ -528,7 +526,7 @@ void ChainEdit::setLEDs(bool entry)
   if(entry)
   {
     doPlayingLed();
-    
+
     doChainLeds();
 
     // set mode indicator
@@ -549,7 +547,7 @@ void ChainEdit::setLEDs(bool entry)
 
 UtilityMode::UtilityMode(): pvEditorMode()
 {
-  
+
 }
 
 void UtilityMode::HandleKey(uint32_t keynum, bool pressed)
@@ -582,18 +580,18 @@ void UtilityMode::HandleKey(uint32_t keynum, bool pressed)
   else if((keynum >= 0) && (keynum <= 15))
   {
     doUtilMode(keynum, pressed);
-    
+
   }
 }
 
 void UtilityMode::setLEDs(bool entry)
 {
   //uint32_t bitnum;
-  
+
   if(entry)
   {
     doPlayingLed();
-    
+
     // Mode indication
     theScanner.setBackgroundLED(UTILITY_SEL_INDICATOR);
 
@@ -609,12 +607,12 @@ void UtilityMode::setLEDs(bool entry)
 void UtilityMode::doUtilMode(uint32_t keynum, bool pressed)
 {
   bool playing = thePlayer.isPlaying();
-  
+
   if(!pressed)
   {
     return;
   }
-  
+
   switch(keynum)
   {
     case 0:
@@ -644,7 +642,7 @@ void UtilityMode::doUtilMode(uint32_t keynum, bool pressed)
       if(!playing)
       {
         delay(100);
-        
+
         thePattern.writeToCard();
 
         delay(100);
@@ -663,7 +661,7 @@ void UtilityMode::doUtilMode(uint32_t keynum, bool pressed)
       }
     }
     break;
-    
+
   }
 }
 
