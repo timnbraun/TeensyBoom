@@ -5,6 +5,7 @@
 ## AVR Development
 *.eep
 *.elf
+*.hex
 *.lst
 *.lss
 *.sym
@@ -28,6 +29,8 @@
 .metadata
 bin/
 tmp/
+obj/
+lib/
 *.tmp
 *.bak
 *.swp
