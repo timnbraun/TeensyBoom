@@ -22,7 +22,7 @@ public:
   bool getMuteBit(uint32_t bit);
   bool getPendingMuteBit(uint32_t bit);
 
-  bool setNextPattern(int32_t next);
+  bool setNextPattern(uint32_t next);
   int32_t getActivePattern();
   int32_t getPendingPattern();
 
@@ -36,7 +36,7 @@ public:
   // Chain Stuff
   bool    chainIsActive();
   void    initChain();
-  void    addToChain(int32_t patt_num);
+  void    addToChain(uint32_t patt_num);
   int32_t getNextChainVal();
   bool    checkChainMembership(int32_t patt);
 
@@ -47,18 +47,18 @@ private:
   int32_t current_step;
   int32_t prev_step;
   int32_t pause_len;
-  int32_t next_time;
+  uint32_t next_time;
 
   int32_t active_mutes;
   int32_t pending_mutes;
 
-  int32_t active_pattern;
-  int32_t pending_pattern;
+  uint32_t active_pattern;
+  uint32_t pending_pattern;
 
   bool    chain_active;
-  int32_t chain_len;
-  int32_t chain_insert_idx;
-  int32_t chain_play_idx;
+  uint32_t chain_len;
+  uint32_t chain_insert_idx;
+  uint32_t chain_play_idx;
   int8_t  chain_array[CHAIN_LEN];
 
 };

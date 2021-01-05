@@ -5,6 +5,7 @@
 #include "editor.h"
 #include "voice.h"
 #include "voice.h"
+#include <climits>
 
 // Similar, for the pattern...
 extern Pattern      thePattern;
@@ -111,7 +112,7 @@ bool Player::getPendingMuteBit(uint32_t bit)
 
 
 
-bool Player::setNextPattern(int32_t next)
+bool Player::setNextPattern(uint32_t next)
 {
   if(next > Pattern::NUM_PATTERNS)
     return false;
@@ -180,7 +181,7 @@ void  Player::initChain()
   chain_play_idx = 0;
 }
 
-void Player::addToChain(int32_t patt_num)
+void Player::addToChain(uint32_t patt_num)
 {
   if(patt_num >= Pattern::NUM_PATTERNS)
   {
@@ -234,7 +235,7 @@ int32_t Player::getNextChainVal()
 bool   Player::checkChainMembership(int32_t patt)
 {
   // is patt # active within chain?
-  for(int32_t i = 0; i < chain_insert_idx; i++)
+  for(uint32_t i = 0; i < chain_insert_idx; i++)
   {
     if(patt == chain_array[i])
     {
@@ -353,11 +354,11 @@ void Player::tick()
 
     if(!chain_active)
     {
-      if(pending_pattern != -1)
+      if(pending_pattern != UINT_MAX)
       {
         active_pattern = pending_pattern;
         thePattern.setCurrentPattern(pending_pattern);
-        pending_pattern = -1;
+        pending_pattern = UINT_MAX;
       }
       //else, just keep current pattern...
     }
