@@ -1,8 +1,8 @@
 #
-# Makefile for teensykick
+# Makefile for TeensyBoom
 #
 
-LIBRARYPATH = ../../teensyduino
+LIBRARYPATH = ../../teensy-duino
 
 TEENSY32 := 1
 
