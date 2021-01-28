@@ -9,7 +9,7 @@
 #include <SPI.h>
 #include <SD.h>
 #include <SerialFlash.h>
-
+#include <usb_dev.h>
 
 #include "panel-scanner.h"
 #include "editor.h"
@@ -25,14 +25,14 @@ Pattern      thePattern; // TBD: multidimensional...
 Player       thePlayer;
 
 
-void setup() {
+void setup() 
+{
   // put your setup code here, to run once:
-
-  Serial.begin(115200);
+  usb_init();
 
   delay(1500);
 
-  Serial.println("Setup");
+  dbgln("Setup");
 
   pinMode(15, INPUT); // Volume pot pin?
 
@@ -48,38 +48,32 @@ void setup() {
 
   if (!(SD.begin(10)))
   {
-    Serial.println("Unable to access the SD card");
+    dbgln("Unable to access the SD card");
   }
   else
   {
-    Serial.println("SD card begin worked");
+    dbgln("SD card begin worked");
   }
 
   if (SD.exists("test.txt"))
   {
-    Serial.println("found test.txt file");
+    dbgln("found test.txt file");
   }
   else
   {
-    Serial.println("Didn't find test file?");
+    dbgln("Didn't find test file?");
   }
-
 
   theEditor.setMode(Editor::eMODE_PATT_SEL);
 
   // audio library init
   AudioMemory(20);
 
-  //next = millis() + 1000;
-
-  // read panel before we start to run
-  //paramUpdate();
-
   voiceInit();
 
   delay(500);
 
-  Serial.println("Setup Complete");
+  dbgln("Setup Complete");
 }
 
 void loop()
@@ -87,7 +81,6 @@ void loop()
   uint32_t now = millis();
   static uint32_t then;
 
-#if 1
   // put your main code here, to run repeatedly:
 
   paramUpdate1();// kik,snr,hat
@@ -108,15 +101,12 @@ void loop()
   {
     //theScanner.dumpLEDs();
 
-
-    Serial.print("Diagnostics: ");
-    Serial.print(" max, buffs: ");
-    Serial.print(AudioProcessorUsageMax());
-    Serial.print(" ");
-    Serial.println(AudioMemoryUsageMax());
+    dbgln("Diagnostics:");
+    fprintf(stderr, " max: %f, buffs: %d\n", AudioProcessorUsageMax(), AudioMemoryUsageMax());
     AudioProcessorUsageMaxReset();
   }
 
   then = now;
-#endif
+
+	usbMIDI.read();
 }
